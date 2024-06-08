@@ -5,9 +5,9 @@ import { Images } from "../models/Images.js";
 
 export const createProduct = async (req, res) => {
     const {body, file} = req
-    //const {body} = req
 
     try {
+        
         if (!file) {
             return res.status(400)
                 .json({
@@ -16,42 +16,43 @@ export const createProduct = async (req, res) => {
                 })
         }
 
-        // const imageBuffer = fs.readFileSync(`./temp/imgs/${file.filename}`)
+        const imageBuffer = fs.readFileSync(`./temp/imgs/${file.filename}`)
+        console.log(imageBuffer)
+
+        const image = await Images.create({
+            fileName: file.filename,
+            img: {
+                data: imageBuffer,
+                contentType: "image/png"
+            }
+        })
         
-        // const image = await Images.create({
-        //     fileName: file.filename,
-        //     img: {
-        //         data: imageBuffer,
-        //         contentType: "image/png"
-        //     }
-        // })
-        
-        // if (!image) {
-        //     return res.status(400)
-        //         .json({
-        //             ok: false,
-        //             msg: "No se pudo guardar correctamente la imagen."
-        //         })
-        // }
+        if (!image) {
+            return res.status(400)
+                .json({
+                    ok: false,
+                    msg: "No se pudo guardar correctamente la imagen."
+                })
+        }
 
         //const product = await Products.create(body);
-        console.log(body)
+        //console.log(body)
         //console.log(file.filename)
 
         const product = await Products.create({
             ...body,
             // para el caso que la imagenes queden alojadas permanentemente en nuestro servidor
-            img1: `${process.env.BASE_URL}/public/${file.filename}`
+            // img1: `${process.env.BASE_URL}/public/${file.filename}`
             
-            //img1: `${process.env.BASE_URL}/images/${image._id}`
+            img1: `${process.env.BASE_URL}/images/${image._id}`
         });
 
-        // fs.rm(`./temp/imgs/${file.filename}`, error => {
-        //         if (error) {
-        //             console.log("Lo sentimos, no hemos podido eliminar el archivo")
-        //         }
-        //         console.log("El archivo se ha eliminado correctamente")
-        //     })
+        fs.rm(`./temp/imgs/${file.filename}`, error => {
+                if (error) {
+                    console.log("Lo sentimos, no hemos podido eliminar el archivo")
+                }
+                console.log("El archivo se ha eliminado correctamente")
+            })
 
         if (!product) {
             return res.status(400)
@@ -67,8 +68,7 @@ export const createProduct = async (req, res) => {
             msg: "Se ha creado el producto correctamente."
         })
     } catch (error) {
-        console.log("Ha habido un error al crear el producto.")
-        //console.log("Ha habido un error al crear el producto.", error)
+        console.log("Ha habido un error al crear el producto.", error)
 
         res.status(500)
             .json({

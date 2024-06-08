@@ -1,1 +1,1 @@
-Acáse subirán todas las imágenes.
+Acá se subirán todas las imágenes.
