@@ -88,6 +88,10 @@ export const getProducts = async (req, res) => {
         // const products = await Products.find({ name: new RegExp(search) } )
         const products = await Products.find({...searchBy, deletedAt: {$in: [null, undefined]}})
 
+        if (!Array.isArray(products)) {
+            throw new Error("La respuesta no es un array");
+        }
+
         res.json({
             ok: true,
             products
