@@ -77,6 +77,80 @@ export const createProduct = async (req, res) => {
             })
     }
 } 
+/////////////////////////////////
+// import fs from "fs";
+// import { Products } from "../models/Products.js";
+// import { Images } from "../models/Images.js";
+
+// export const createProduct = async (req, res) => {
+//     const { body, files } = req;
+
+//     try {
+//         if (!files || files.length === 0) {
+//             return res.status(400).json({
+//                 ok: false,
+//                 msg: "Las fotos son obligatorias."
+//             });
+//         }
+
+//         const imageIds = [];
+//         for (const file of files) {
+//             const imageBuffer = fs.readFileSync(`./temp/imgs/${file.filename}`);
+
+//             const image = await Images.create({
+//                 fileName: file.filename,
+//                 img: {
+//                     data: imageBuffer,
+//                     contentType: "image/png"
+//                 }
+//             });
+
+//             if (!image) {
+//                 return res.status(400).json({
+//                     ok: false,
+//                     msg: "No se pudo guardar correctamente la imagen."
+//                 });
+//             }
+
+//             imageIds.push(`${process.env.BASE_URL}/images/${image._id}`);
+//             fs.rm(`./temp/imgs/${file.filename}`, error => {
+//                 if (error) {
+//                     console.log("Lo sentimos, no hemos podido eliminar el archivo");
+//                 }
+//                 console.log("El archivo se ha eliminado correctamente");
+//             });
+//         }
+
+//         const product = await Products.create({
+//             ...body,
+//             img1: imageIds[0] || "",
+//             img2: imageIds[1] || "",
+//             img3: imageIds[2] || "",
+//             img4: imageIds[3] || ""
+//         });
+
+//         if (!product) {
+//             return res.status(400).json({
+//                 ok: false,
+//                 msg: "No se pudo crear el producto."
+//             });
+//         }
+
+//         res.json({
+//             ok: true,
+//             product,
+//             msg: "Se ha creado el producto correctamente."
+//         });
+//     } catch (error) {
+//         console.log("Ha habido un error al crear el producto.", error);
+
+//         res.status(500).json({
+//             ok: false,
+//             msg: "Ha habido un error con el servidor"
+//         });
+//     }
+// };
+///////////////////////////////////
 
 export const getProducts = async (req, res) => {
 

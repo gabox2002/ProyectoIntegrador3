@@ -27,7 +27,6 @@ const ProductSchema = new Schema({
     },
     longDesc: {
         type: String,
-        required: true
     },
     delivery: {
         type: Boolean,
