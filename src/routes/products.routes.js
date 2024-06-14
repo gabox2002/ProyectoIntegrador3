@@ -8,7 +8,6 @@ import upload from "../libs/storage.js";
 const route = express.Router()
 
 route
-    // .post("/", upload.single("img1"), createProduct)   //OJO
     .post("/", upload.single("image"), createProduct)
     //.post("/", upload.array("images", 4), createProduct)
 
